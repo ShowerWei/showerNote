@@ -2,7 +2,7 @@
 
 // 插入 <ul> 之 <li> 樣板
 var tmpEmp = '<li><input type="text" placeholder="New task..."><span></span></li>',
-    addButton = $('#add'),
+	addButton = $('#add'),
     connected = $('.connected'),      // 三個 <ul>
     placeholder = $('#placeholder'),  // 三個 <ul> 的容器
     mainUl = $('.main'),              // main <ul>
@@ -12,9 +12,7 @@ var tmpEmp = '<li><input type="text" placeholder="New task..."><span></span></li
 
 // 點擊按鈕時，插入新項目
 addButton.on('click', function(){
-  console.log('before click');
   $(tmpEmp).prependTo(mainUl).addClass('is-editing').find('input').focus();
-  console.log('click');
 });
 
 // 按 Enter 鍵時完成編輯並存檔
@@ -51,7 +49,7 @@ mainUl.sortable({
       connectWith: ".connected",
       dropOnEmpty: true,
       tolerance: "pointer"
-});
+    });
 
 
 doneUl.disableSelection();
@@ -87,21 +85,29 @@ mainUl.on('sortstop', function(){
 //
 function save(){
   // 準備好要裝各個項目的空陣列
-  var todo = [];
-  var fin = [];
+  var items = [];
+
   // 對於每個 li，
-  // 把 <span> 裡的文字放進陣列裡
-   mainUl.find('.is-todo').each(function(){
-    todo.push($(this).text());
+  // 把 <li> 裡的class:text放進陣列裡
+  mainUl.find('li').each(function(){
+    var input = $(this);
+    var text = $(this).text();
+    if(input.hasClass('is-done'))
+      items.push({
+        'status': 'is-done',
+        'text': text
+      })
+    else
+      items.push({
+        'status': 'is-todo',
+        'text': text
+      })
+  
   });
 
-   mainUl.find('.is-done').each(function(){
-    fin.push($(this).text());
-  });
+  // 把陣列轉成 JSON 物件後存進 localStorage
+  localStorage.allItems = JSON.stringify(items); 
 
-  // 把陣列轉成 JSON 字串後存進 localStorage
-  localStorage.todoItems = JSON.stringify(todo); 
-  localStorage.finItems = JSON.stringify(fin); 
 }
 
 // 從 localStorage 讀出整個表，放進 <ul>
@@ -109,18 +115,11 @@ function save(){
 function load(){
 // 從 localStorage 裡讀出陣列 JSON 字串
 // 把 JSON 字串轉回陣列
- 
- 
- var todo = JSON.parse(localStorage.todoItems), i;
- var fin = JSON.parse(localStorage.finItems), j;
-
- for(i=0; i<todo.length; i+=1){
-   $(tmpEmp).addClass('is-todo').appendTo(mainUl).find('span').text(todo[i]);
- }
- for(j=0; j<fin.length; j+=1){
-   $(tmpEmp).addClass('is-done').appendTo(mainUl).find('span').text(fin[j]);
- }
+  var items = JSON.parse( localStorage.allItems ), i;
+  // 對於陣列裡的每一個項目，插入回 ul 裡。
+  for(i=0; i<items.length; i+=1){
+    $(tmpEmp).addClass(items[i]['status']).appendTo(mainUl).find('span').text(items[i]['text']);
+  }
 }
-
 
 }());
