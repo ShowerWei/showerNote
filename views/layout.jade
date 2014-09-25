@@ -1,7 +1,7 @@
 doctype html
 html(lang="en")
   head
-    title= pageTitle
+    title=title
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/jquery-ui.css')
     link(rel='stylesheet', href='/stylesheets/index.css')
@@ -11,7 +11,7 @@ html(lang="en")
       ul.connected.delete 
       ul.connected.main
       ul.connected.done
- 
+  block content 
   script(src='/javascripts/jquery.min.js')
   script(src='/javascripts/jquery-ui.min.js')
   script(src='/javascripts/layout.js')
