@@ -19,7 +19,6 @@ router.route('/items')
   })
    //create a todo item
   .post(function(req, res){
-    var parseTodo;
     var todo ={
       stat : req.body.stat,
       text : req.body.text
@@ -27,16 +26,15 @@ router.route('/items')
 
     fs.readFile('./todo.json', function (err, data) {
       if (err) throw err;
-      parseTodo = JSON.parse(data);
+      var parseTodo = JSON.parse(data);
       parseTodo.todoList.push(todo);
       console.log(parseTodo);
+      parseTodo = JSON.stringify(parseTodo);
+      fs.writeFile('./todo.json',  parseTodo, function (err) {
+        if (err) throw err;
+        console.log('It\'s saved!');
+      });
     });     
-
-    var json = JSON.stringify(parseTodo);
-    fs.writeFile('./todo.json',  json, function (err) {
-      if (err) throw err;
-      console.log('It\'s saved!');
-    });
 //todo.save(function(err){
     //  if(err)
     //    res.send(err);

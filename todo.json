@@ -1,6 +1,1 @@
-{"todoList": [
-  {
-    "stat":"is-todo",
-    "text":"second"
-  }
-]}
+{"todoList":[{"stat":"is-todo","text":"second"},{"stat":"is-todo","text":"third"},{"stat":"is-todo","text":"fourth"}]}
