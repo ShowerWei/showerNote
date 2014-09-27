@@ -7,6 +7,34 @@ router.get('/', function(req, res) {
   res.render('index', { title: 'showerNote' });
 });
 
+// route middleware to validate :id
+router.param('id', function(req, res, next, id) {
+  // do validation on name here
+  // blah blah validation
+  // log something so we know its working
+  console.log('doing id validations on ' + id);
+  
+  // once validation is done save the new item in the req
+  req.param.id = id;
+  // go to the next thing
+  next();	
+});
+
+// route middleware to validate :id
+router.param('newPosition', function(req, res, next, newPosition) {
+  // do validation on name here
+  // blah blah validation
+  // log something so we know its working
+  console.log('doing newPosition validations on ' + newPosition);
+
+  // once validation is done save the new item in the req
+  req.param.newPosition = newPosition;
+  // go to the next thing
+  next();
+});
+
+
+
 // more routes for our API will happen here
 router.route('/items')
   .get(function(req, res){
@@ -35,13 +63,20 @@ router.route('/items')
         console.log('It\'s saved!');
       });
     });     
-//todo.save(function(err){
-    //  if(err)
-    //    res.send(err);
-    res.json({"message": "todo created"});
-    //});
   });
 
+router.route('/items/:id')
+  .put(function(req, res) {
+    res.send('put id:' + req.param.id + '!');
+  })
+  .delete(function(req, res) {
+    res.send('delete id:' + req.param.id + '!');
+  });
+
+router.route('/items/:id/reposition/:newPosition')
+  .put(function(req, res) {
+    res.send('put id :' + req.param.id +". into: " + req.param.newPosition);
+  });
 
 
 module.exports = router;
