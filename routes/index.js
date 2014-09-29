@@ -13,9 +13,10 @@ router.param('id', function(req, res, next, id) {
   // blah blah validation
   // log something so we know its working
   console.log('doing id validations on ' + id);
-  
+
   // once validation is done save the new item in the req
   req.param.id = id;
+  
   // go to the next thing
   next();	
 });
@@ -24,6 +25,7 @@ router.param('id', function(req, res, next, id) {
 router.param('newPosition', function(req, res, next, newPosition) {
   // do validation on name here
   // blah blah validation
+
   // log something so we know its working
   console.log('doing newPosition validations on ' + newPosition);
 
@@ -47,36 +49,82 @@ router.route('/items')
   })
    //create a todo item
   .post(function(req, res){
-    var todo ={
+    var listConstructor ={
+      "todoList": []
+    };
+    
+    var reqTodo ={
       stat : req.body.stat,
       text : req.body.text
     };
-
     fs.readFile('./todo.json', function (err, data) {
       if (err) throw err;
-      var parseTodo = JSON.parse(data);
-      parseTodo.todoList.push(todo);
-      console.log(parseTodo);
-      parseTodo = JSON.stringify(parseTodo);
-      fs.writeFile('./todo.json',  parseTodo, function (err) {
+      var i;
+      var todoHistory = JSON.parse(data);
+      listConstructor.todoList.push(reqTodo);
+      for(i=0; i<todoHistory.todoList.length; i+=1)
+        listConstructor.todoList.push(todoHistory.todoList[i]);
+      var updatedTodo = JSON.stringify(listConstructor);
+
+      fs.writeFile('./todo.json',  updatedTodo, function (err) {
         if (err) throw err;
         console.log('It\'s saved!');
+        res.set({"Access-Control-Allow-Origin": "*"});
+        res.end();
       });
-    });     
+    });    
   });
 
 router.route('/items/:id')
   .put(function(req, res) {
-    res.send('put id:' + req.param.id + '!');
+    //res.send('put id:' + req.param.id + '!');
+    fs.readFile('./todo.json', function (err, data) {
+      if (err) throw err;
+      var i;
+      var todoHistory = JSON.parse(data);
+      for(i=0; i<todoHistory.todoList.length; i+=1){
+        if(todoHistory.todoList[i].text === req.param.id)
+          todoHistory.todoList[i].stat = 'is-done';
+          console.log('done: '+ todoHistory.todoList[i].stat);
+      };
+      var updatedTodo = JSON.stringify(todoHistory);
+
+      fs.writeFile('./todo.json',  updatedTodo, function (err) {
+        if (err) throw err;
+        console.log('It\'s done!');
+        res.set({"Access-Control-Allow-Origin": "*"});
+        res.end();
+      });
+    });
   })
+
   .delete(function(req, res) {
-    res.send('delete id:' + req.param.id + '!');
+    var listConstructor ={
+      "todoList": []
+    };
+    fs.readFile('./todo.json', function (err, data) {
+      if (err) throw err;
+      var i;
+      var todoHistory = JSON.parse(data);
+      for(i=0; i<todoHistory.todoList.length; i+=1){
+        if(todoHistory.todoList[i].text !== req.param.id)
+          listConstructor.todoList.push(todoHistory.todoList[i]);
+      };
+      var updatedTodo = JSON.stringify(listConstructor);
+
+      fs.writeFile('./todo.json',  updatedTodo, function (err) {
+        if (err) throw err;
+        console.log('It\'s deleted!');
+        res.set({"Access-Control-Allow-Origin": "*"});
+        res.end();
+      });
+    });
   });
 
-router.route('/items/:id/reposition/:newPosition')
+/*router.route('/items/:id/reposition/:newPosition')
   .put(function(req, res) {
     res.send('put id :' + req.param.id +". into: " + req.param.newPosition);
-  });
+  });*/
 
 
 module.exports = router;
