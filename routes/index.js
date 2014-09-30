@@ -77,7 +77,6 @@ router.route('/items')
 
 router.route('/items/:id')
   .put(function(req, res) {
-    //res.send('put id:' + req.param.id + '!');
     fs.readFile('./todo.json', function (err, data) {
       if (err) throw err;
       var i;
@@ -121,10 +120,48 @@ router.route('/items/:id')
     });
   });
 
-/*router.route('/items/:id/reposition/:newPosition')
+router.route('/items/:id/reposition/:newPosition')
   .put(function(req, res) {
-    res.send('put id :' + req.param.id +". into: " + req.param.newPosition);
-  });*/
+    var tmpStat;
+    var listPosit
+    var posit =  parseInt(req.param.newPosition);
+    var listConstructor ={
+      "todoList": []
+    };
+    
+    var reposit = {
+      stat : 'is-todo',
+      text : req.param.id
+   };
+
+    fs.readFile('./todo.json', function (err, data) {
+      if (err) throw err;
+      var i;
+      var todoHistory = JSON.parse(data);
+      for(i=0, listPosit=0; i < todoHistory.todoList.length ||  listPosit < todoHistory.todoList.length ; i+=1){
+
+        if(listPosit===posit){
+          listConstructor.todoList.push(reposit);
+          listPosit+=1;
+        }
+        if( i < todoHistory.todoList.length && todoHistory.todoList[i].text !== req.param.id){
+          listConstructor.todoList.push(todoHistory.todoList[i]);
+          listPosit+=1;
+        }
+        if( i < todoHistory.todoList.length && todoHistory.todoList[i].text === req.param.id)
+          tmpStat = todoHistory.todoList[i].stat; 
+      }
+      listConstructor.todoList[posit].stat = tmpStat;
+      var updatedTodo = JSON.stringify(listConstructor);
+
+      fs.writeFile('./todo.json',  updatedTodo, function (err) {
+        if (err) throw err;
+        console.log('It\'s reposition!');
+        res.set({"Access-Control-Allow-Origin": "*"});
+        res.end();
+      });
+    });
+  });
 
 
 module.exports = router;
