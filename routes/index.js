@@ -1,3 +1,4 @@
+
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
@@ -77,16 +78,24 @@ router.route('/items')
 
 router.route('/items/:id')
   .put(function(req, res) {
+    var listConstructor ={
+      "todoList": []
+    }
+    var done ={
+      stat : 'is-done',
+      text : req.param.id
+    }
     fs.readFile('./todo.json', function (err, data) {
       if (err) throw err;
       var i;
       var todoHistory = JSON.parse(data);
       for(i=0; i<todoHistory.todoList.length; i+=1){
-        if(todoHistory.todoList[i].text === req.param.id)
-          todoHistory.todoList[i].stat = 'is-done';
-          console.log('done: '+ todoHistory.todoList[i].stat);
+        if(todoHistory.todoList[i].text !== req.param.id)
+          listConstructor.todoList.push(todoHistory.todoList[i]);
       };
-      var updatedTodo = JSON.stringify(todoHistory);
+      listConstructor.todoList.push(done);
+ 
+      var updatedTodo = JSON.stringify(listConstructor);
 
       fs.writeFile('./todo.json',  updatedTodo, function (err) {
         if (err) throw err;

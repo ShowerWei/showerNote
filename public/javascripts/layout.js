@@ -102,19 +102,22 @@ $.ajax({
   },
 
   error:function(xhr, ajaxOptions, thrownError){ 
-   alert('fetchTodoList xhr.status: '+xhr.status); 
-   alert('fetchTodoList thrownError: '+thrownError); 
+ //  alert('fetchTodoList xhr.status: '+xhr.status); 
+ //  alert('fetchTodoList thrownError: '+thrownError); 
    }
  });
 }
 
 //POST /items ：新增一個TODO item
 function addItem(todoText){
+ var todoID = createID();
 
  var newTodo ={
+      oid : todoID,     
       stat : "is-todo",
       text : todoText
     };
+  console.log("to: "+newTodo.oid);
 $.ajax({
   url: API+'/items/', 
   data: newTodo,
@@ -126,9 +129,9 @@ $.ajax({
   },
 
   error:function(xhr, ajaxOptions, thrownError){ 
-    alert('addItem xhr.status: '+xhr.status); 
-    alert('addItem xhr.readyState: '+xhr.readyState); 
-    alert('addItem thrownError: '+thrownError); 
+//    alert('addItem xhr.status: '+xhr.status); 
+//    alert('addItem xhr.readyState: '+xhr.readyState); 
+//    alert('addItem thrownError: '+thrownError); 
    }
  });
 }
@@ -144,9 +147,9 @@ $.ajax({
   },
 
   error:function(xhr, ajaxOptions, thrownError){ 
-    alert('updateItem xhr.status: '+xhr.status); 
-    alert('updateItem xhr.readyState: '+xhr.readyState); 
-    alert('updateItem thrownError: '+thrownError); 
+//    alert('updateItem xhr.status: '+xhr.status); 
+//    alert('updateItem xhr.readyState: '+xhr.readyState); 
+//    alert('updateItem thrownError: '+thrownError); 
    }
  });
 }
@@ -162,9 +165,9 @@ $.ajax({
   },
 
   error:function(xhr, ajaxOptions, thrownError){ 
-    alert('reposition xhr.status: '+xhr.status); 
-    alert('reposition xhr.readyState: '+xhr.readyState); 
-    alert('reposition thrownError: '+thrownError); 
+ //   alert('reposition xhr.status: '+xhr.status); 
+ //   alert('reposition xhr.readyState: '+xhr.readyState); 
+ //   alert('reposition thrownError: '+thrownError); 
    }
  });
 }
@@ -180,12 +183,17 @@ $.ajax({
   },
 
   error:function(xhr, ajaxOptions, thrownError){ 
-    alert('deleteItem xhr.status: '+xhr.status); 
-    alert('deleteItem xhr.readyState: '+xhr.readyState); 
-    alert('deleteItem thrownError: '+thrownError); 
+ //   alert('deleteItem xhr.status: '+xhr.status); 
+ //   alert('deleteItem xhr.readyState: '+xhr.readyState); 
+ //   alert('deleteItem thrownError: '+thrownError); 
    }
  });
 }
 
+function createID(){
+  var id = new Date();
+  var oid = ""+id.getFullYear()+id.getMonth()+id.getDay()+id.getHours()+id.getMinutes()+id.getSeconds()+id.getMilliseconds();
+  return oid;
+}
 
 }());
