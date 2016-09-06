@@ -17,7 +17,7 @@ Install [Docker Compose](http://docs.docker.com/compose/) on your system.
 
 ## Setup
 
-1. Run `docker-compose build`. It will pull a base image from the Docker registry and install [express-generator](https://github.com/expressjs/generator) globally in your container. The rest can be ignored for now.
+1. Run `docker-compose build`. It will pull a base image from the Docker registry and install 
 
 2. Run `docker-compose run web express app`. This will bootstrap a new Express app in your container in the `app` subfolder. Since it already exists, Express will ask you if you want to override, which you can answer with `yes`.
 
@@ -25,4 +25,4 @@ Install [Docker Compose](http://docs.docker.com/compose/) on your system.
 
 ## Start
 
-Run `docker-compose up` to create and start the container. The app should then be running on your docker daemon on port 3030 (On OS X you can use `boot2docker ip` to find out the IP address).
+Run `docker-compose up` to create and start the container. The app should then be running on your docker daemon on port 3030.
