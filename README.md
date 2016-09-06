@@ -21,4 +21,4 @@ Install [Docker Compose](http://docs.docker.com/compose/) on your system.
 
 ## Start
 
-1.Run `docker-compose up` to create and start the container. The app should then be running on your docker daemon on port 3030.
+1. Run `docker-compose up` to create and start the container. The app should then be running on your docker daemon on port 3030.
