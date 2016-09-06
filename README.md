@@ -17,7 +17,7 @@ Install [Docker Compose](http://docs.docker.com/compose/) on your system.
 
 ## Setup
 
-1. Run `docker-compose build`. It will install install all dependencies from the (generated) package.json, expose port 3000 to the host, and instruct the container to execute `node app/bin/www` on start up.
+1. Run `docker-compose build`. It will create Docker image, which install all dependencies from the (generated) package.json, expose port 3000 to the host, and instruct the container to execute `node app/bin/www` on start up.
 
 ## Start
 
