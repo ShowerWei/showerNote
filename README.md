@@ -17,11 +17,7 @@ Install [Docker Compose](http://docs.docker.com/compose/) on your system.
 
 ## Setup
 
-1. Run `docker-compose build`. It will pull a base image from the Docker registry and install 
-
-2. Run `docker-compose run web express app`. This will bootstrap a new Express app in your container in the `app` subfolder. Since it already exists, Express will ask you if you want to override, which you can answer with `yes`.
-
-3. Run `docker-compose build` again. It will install install all dependencies from the (generated) package.json, expose port 3000 to the host, and instruct the container to execute `node app/bin/www` on start up.
+1. Run `docker-compose build`. It will install install all dependencies from the (generated) package.json, expose port 3000 to the host, and instruct the container to execute `node app/bin/www` on start up.
 
 ## Start
 
