@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
+var todoPath = './app/todo.json'
 
 // route middleware to validate :id
 router.param('id', function(req, res, next, id) {
@@ -25,7 +26,7 @@ router.param('newPosition', function(req, res, next, newPosition) {
 // more routes for our API will happen here
 router.route('/')
   .get(function(req, res){
-    fs.readFile('./todo.json', 'utf8', function (err, data) {
+    fs.readFile(todoPath, 'utf8', function (err, data) {
       if (err) { throw err; }
       res.set({"Access-Control-Allow-Origin": "*"});
       res.setHeader('Content-Type', 'application/json');
@@ -42,7 +43,7 @@ router.route('/')
       stat : req.body.stat,
       text : req.body.text
     };
-    fs.readFile('./todo.json', function (err, data) {
+    fs.readFile(todoPath, function (err, data) {
       if (err) throw err;
       var i;
       var todoHistory = JSON.parse(data);
@@ -51,7 +52,7 @@ router.route('/')
         listConstructor.todoList.push(todoHistory.todoList[i]);
       var updatedTodo = JSON.stringify(listConstructor);
 
-      fs.writeFile('./todo.json',  updatedTodo, function (err) {
+      fs.writeFile(todoPath,  updatedTodo, function (err) {
         if (err) throw err;
         console.log('It\'s saved!');
         res.set({"Access-Control-Allow-Origin": "*"});
@@ -69,7 +70,7 @@ router.route('/:id')
       stat : 'is-done',
       text : req.param.id
     }
-    fs.readFile('./todo.json', function (err, data) {
+    fs.readFile(todoPath, function (err, data) {
       if (err) throw err;
       var i;
       var todoHistory = JSON.parse(data);
@@ -80,7 +81,7 @@ router.route('/:id')
       listConstructor.todoList.push(done);
 
       var updatedTodo = JSON.stringify(listConstructor);
-      fs.writeFile('./todo.json',  updatedTodo, function (err) {
+      fs.writeFile(todoPath,  updatedTodo, function (err) {
         if (err) throw err;
         console.log('It\'s deleted!');
         res.set({"Access-Control-Allow-Origin": "*"});
@@ -92,7 +93,7 @@ router.route('/:id')
     var listConstructor ={
       "todoList": []
     };
-    fs.readFile('./todo.json', function (err, data) {
+    fs.readFile(todoPath, function (err, data) {
       if (err) throw err;
       var i;
       var todoHistory = JSON.parse(data);
@@ -102,7 +103,7 @@ router.route('/:id')
       };
       var updatedTodo = JSON.stringify(listConstructor);
 
-      fs.writeFile('./todo.json',  updatedTodo, function (err) {
+      fs.writeFile(todoPath,  updatedTodo, function (err) {
         if (err) throw err;
         console.log('It\'s deleted!');
         res.set({"Access-Control-Allow-Origin": "*"});
@@ -126,7 +127,7 @@ router.route('/:id/reposition/:newPosition')
       text : req.param.id
    };
 
-    fs.readFile('./todo.json', function (err, data) {
+    fs.readFile(todoPath, function (err, data) {
       if (err) throw err;
       var i;
       var todoHistory = JSON.parse(data);
@@ -146,7 +147,7 @@ router.route('/:id/reposition/:newPosition')
       listConstructor.todoList[posit].stat = tmpStat;
       var updatedTodo = JSON.stringify(listConstructor);
 
-      fs.writeFile('./todo.json',  updatedTodo, function (err) {
+      fs.writeFile(todoPath,  updatedTodo, function (err) {
         if (err) throw err;
         console.log('It\'s reposition!');
         res.set({"Access-Control-Allow-Origin": "*"});

@@ -1,7 +1,7 @@
 web:
   build: .
   volumes:
-    - "./showerNote:/src"
+    - "./showerNote:/src/app"
   ports:
     - "3030:3000"
   links:

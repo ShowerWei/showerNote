@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "nodemon -L ./bin/www"
+    "start": "nodemon -L ./app/bin/www"
   },
   "dependencies": {
     "express": "~4.9.0",
@@ -22,6 +22,7 @@
     "passport-google-oauth" : "~0.1.5",
     "express-session": "~1.0.0",
     "connect-flash" : "~0.1.1",
-    "bcrypt-nodejs" : "latest" 
+    "bcrypt-nodejs" : "latest",
+    "redis": "~0.12.1"
   }
 }
